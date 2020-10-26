@@ -17,13 +17,13 @@ Then, can we drop some of the work? Sure,
 we can not generate any of the odd-index coefficients.
 See [`half_out.py`](half_out_fft.py).
 
-And now a magic trick: can we drop the odd half of the inputs,
+And now a magic trick: can we drop the 2nd half of the inputs,
  and deduce what they could have been, along with the missing outputs?
 
-Should be possible, see [`partial_fft.py`](partial_fft.py) (**work in progress, _bugs_ being fixed**)
+Should be possible, see [`partial_fft.py`](partial_fft.py) (**testing in progress, there may be _bugs_**)
 
 The idea is then to extend `N` values into `2N`, suiting an FFT with `2N` values, all even coefficients being `0`.
 
-TODO: error-correction compatibility. Currently it works by padding N zero values to the coefficients, instead of making all evens zero.
+TODO: error-correction compatibility. Currently it works by padding N zeros to the coefficients, instead of making all evens zero.
 Maybe it still works, or alternatively, refactor the `partial_fft`.
 
