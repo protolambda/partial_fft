@@ -18,14 +18,17 @@ def input_extension_fft_base_case(even_val: int, a: int, modulus: int, inverse_d
     return odd_val
 
 
-def input_extension_fft(evens: list, odds: list, a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> list:
-    if len(evens) == 1:
+# values here is only the first half of the original input
+# "a" are the even-indexed expected outputs
+def input_extension_fft(half_values: list, a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> list:
+    if len(a) == 1:
         assert len(a) == 1
-        assert odds[0] == None
-        odd_val = input_extension_fft_base_case(evens[0], a[0], modulus, inverse_domain[0])
+        assert len(half_values) == 1
+        odd_val = input_extension_fft_base_case(half_values[0], a[0], modulus, inverse_domain[0])
         return [odd_val]
 
-    half = len(evens)
+    half = len(a)
+    assert len(half_values) == half
     halfhalf = half // 2
 
     L0 = [0] * halfhalf
@@ -45,8 +48,8 @@ def input_extension_fft(evens: list, odds: list, a: list, modulus: int, domain: 
         R0[i] = (((a_half0 - L0[i]) % modulus) * inverse_domain[i * 2]) % modulus
         # R0[i] = (((-a_half1 + L0[i]) % modulus) * inverse_domain[i*2]) % modulus
 
-    odds0 = input_extension_fft(evens[::2], evens[1::2], L0, modulus, domain[::2], inverse_domain[::2], inv2)
-    odds1 = input_extension_fft(odds[::2], odds[1::2], R0, modulus, domain[::2], inverse_domain[::2], inv2)
+    odds0 = input_extension_fft(half_values[::2], L0, modulus, domain[::2], inverse_domain[::2], inv2)
+    odds1 = input_extension_fft(half_values[1::2], R0, modulus, domain[::2], inverse_domain[::2], inv2)
 
     odds = [odds0[i // 2] if i % 2 == 0 else odds1[i // 2] for i in range(half)]
     return odds
@@ -60,8 +63,7 @@ def input_extension_fft_test(half_values, domain, even_coeffs):
     assert len(half_values) * 2 == len(even_coeffs) * 2 == len(domain)
     inverse_domain = [modular_inverse(d, modulus) for d in domain]
 
-    half_full_values = half_values + [None] * len(half_values)
-    resolved_odd_values = input_extension_fft(half_full_values[::2], half_full_values[1::2], even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
+    resolved_odd_values = input_extension_fft(half_values, even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
     print("resolved_odd_values", resolved_odd_values)
 
     reconstructed_values = half_values + resolved_odd_values

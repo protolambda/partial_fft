@@ -8,7 +8,7 @@ First, have a look at the classic FFT: [`classic_fft.py`](classic_fft.py)
 
 Then note that we can:
  - separate the even and odd outputs (`a` and `b`)
- - separate the even and odd inputs (`evens` and `odds`)
+ - think of the inputs as two halfs (the deepest call depth always deals with a value from the first half, and from the second half of the input)
  
 It's still an FFT, and does the same thing.
 See [`alike_fft.py`](alike_fft.py).
@@ -20,7 +20,9 @@ See [`half_out.py`](half_out_fft.py).
 And now a magic trick: can we drop the 2nd half of the inputs,
  and deduce what they could have been, along with the missing outputs?
 
-Should be possible, see [`partial_fft.py`](partial_fft.py) (**testing in progress, there may be _bugs_**)
+Yes that is possible, see [`partial_fft.py`](partial_fft.py) (**testing in progress, there may be _bugs_**).
+Again, the deepst call depth only deals with 1 value from the original input left half, and 1 value from the right half.
+We can only give it the left half, and have it solve for the value from right half, based on expected output.
 
 The idea is then to extend `N` values into `2N`, suiting an FFT with `2N` values, all even coefficients being `0`.
 
