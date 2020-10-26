@@ -27,6 +27,10 @@ def partial_fft_base_case(even_val: int, a: int, modulus: int, inverse_domain: i
 
 # values here is only the first half of the original input
 # "a" are the even-indexed expected outputs
+# The output is (odds, b)
+# "odds" is called odds since it's split that way on the deepest level, and merged back up.
+# However, as an outside caller, it will match the 2nd half that's missing after all input half_values.
+# And "b" are the derived odd-index coefficients.
 def partial_fft(half_values: list, a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> (list, list):
     # print("alike_fft evens ->>>>>>>>>>>>>>>>>>>>>>", evens, "odds", odds)
     if len(a) == 1:

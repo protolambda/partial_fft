@@ -37,8 +37,8 @@ So we can run a specialized form of the partial FFT which only does half of the 
 ## Benchmarks
 
 ```
-         FFT: scale_8            200 ops         1222398 ns/op
- Partial FFT: scale_8            200 ops         1106892 ns/op
-InputExt FFT: scale_8            200 ops          544612 ns/op
+         FFT: scale_8            200 ops         1164430 ns/op
+ Partial FFT: scale_8            200 ops         1108919 ns/op
+InputExt FFT: scale_8            200 ops          512486 ns/op
 ```
 

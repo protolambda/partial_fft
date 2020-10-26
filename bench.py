@@ -56,11 +56,11 @@ def bench(scale: int):
     ns = diff*1e9
     print("         FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
 
-    partial_data = data[:width//2] + [None] * (width//2)
+    partial_data = data[:width//2]
     even_coeffs = [0] * (width//2)
     start = time.time()
     for i in range(N):
-        odds, odd_coeffs = partial_fft(partial_data[::2], partial_data[1::2], even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
+        odds, odd_coeffs = partial_fft(partial_data, even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
         assert len(odd_coeffs) == width//2
         assert len(odds) == width//2
     end = time.time()
@@ -68,12 +68,11 @@ def bench(scale: int):
     ns = diff*1e9
     print(" Partial FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
 
-
-    partial_data = data[:width//2] + [None] * (width//2)
+    partial_data = data[:width//2]
     even_coeffs = [0] * (width//2)
     start = time.time()
     for i in range(N):
-        odds = input_extension_fft(partial_data[::2], partial_data[1::2], even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
+        odds = input_extension_fft(partial_data, even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
         assert len(odds) == width//2
     end = time.time()
     diff = end-start

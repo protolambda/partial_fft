@@ -20,6 +20,10 @@ def input_extension_fft_base_case(even_val: int, a: int, modulus: int, inverse_d
 
 # values here is only the first half of the original input
 # "a" are the even-indexed expected outputs
+
+# The output is just the odds list
+# "odds" is called odds since it's split that way on the deepest level, and merged back up.
+# However, as an outside caller, it will match the 2nd half that's missing after all input half_values.
 def input_extension_fft(half_values: list, a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> list:
     if len(a) == 1:
         assert len(a) == 1
