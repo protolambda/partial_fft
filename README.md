@@ -27,3 +27,16 @@ The idea is then to extend `N` values into `2N`, suiting an FFT with `2N` values
 TODO: error-correction compatibility. Currently it works by padding N zeros to the coefficients, instead of making all evens zero.
 Maybe it still works, or alternatively, refactor the `partial_fft`.
 
+Alternatively, use the `partial FFT` to compute the inverse FFT. Provide N consecutive zeroes, and get the odd missing values.
+
+And can it be even faster? Yes, kind of. For data-extension we are only interested in doubling the values, not the coefficients.
+So we can run a specialized form of the partial FFT which only does half of the work: [`input_extension_fft.py`](input_extension_fft.py).
+
+## Benchmarks
+
+```
+         FFT: scale_8            200 ops         1222398 ns/op
+ Partial FFT: scale_8            200 ops         1106892 ns/op
+InputExt FFT: scale_8            200 ops          544612 ns/op
+```
+
