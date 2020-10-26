@@ -1,5 +1,5 @@
 def alike_fft(evens, odds, modulus, domain) -> (list, list):
-    print("alike_fft evens", evens, "odds", odds)
+    print("alike_fft evens ->>>>>>>>>>>>>>>>>>>>>>", evens, "odds", odds)
     # assert is_power_of_2(a_vals) and is_power_of_2(b_vals)
     if len(evens) == 1:
         x = evens[0]
@@ -14,6 +14,7 @@ def alike_fft(evens, odds, modulus, domain) -> (list, list):
         print("y", y)
         print("a", a)
         print("b", b)
+        print("---")
         return a, b
 
     half = len(evens)
@@ -36,12 +37,16 @@ def alike_fft(evens, odds, modulus, domain) -> (list, list):
     print("a len", len(a))
     print("b len", len(b))
 
+    print("L0: ", L0)
+    print("R0: ", R0)
     for i, (x, y) in enumerate(zip(L0, R0)):
         print(f"alike_fft evens out: ", i, x, y)
         y_times_root = y * domain[i * 2]
         a[i] = (x + y_times_root) % modulus
         a[halfhalf + i] = (x - y_times_root) % modulus
 
+    print("L1: ", L1)
+    print("R1: ", R1)
     for i, (x, y) in enumerate(zip(L1, R1)):
         print(f"alike_fft odds out: ", i, x, y)
         y_times_root = y * domain[1 + i * 2]
@@ -53,15 +58,15 @@ def alike_fft(evens, odds, modulus, domain) -> (list, list):
 
 
 modulus = 337
-
-values = [3, 5]
-domain = [1, 336]
-even_values = values[::2]
-odd_values = values[1::2]
-print("even_values", even_values)
-print("odd_values", odd_values)
-
-assert alike_fft(even_values, odd_values, modulus, domain) == ([8], [335])
+#
+# values = [3, 5]
+# domain = [1, 336]
+# even_values = values[::2]
+# odd_values = values[1::2]
+# print("even_values", even_values)
+# print("odd_values", odd_values)
+#
+# assert alike_fft(even_values, odd_values, modulus, domain) == ([8], [335])
 
 values = [3, 1, 4, 1, 5, 9, 2, 6]
 domain = [1, 85, 148, 111, 336, 252, 189, 226]
