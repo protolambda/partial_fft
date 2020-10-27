@@ -43,6 +43,9 @@ This is form of the other partial FFT, that states a half of 0 inputs, and then 
 Which can then be optimized, since the zeroes cancel out some operations. 
 See [`das_fft.py`](das_fft.py).
 
+A proof of concept of recovering data produced by DAS FFT, using the FFT recovery code of Vitalik, can be found here:
+[`recovery_poc.py`](recovery_poc.py)
+
 ## Benchmarks
 
 Note that the python math here is not constant time, and zeroes result in significantly better performance.
