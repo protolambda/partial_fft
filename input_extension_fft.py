@@ -59,20 +59,20 @@ def input_extension_fft(half_values: list, a: list, modulus: int, domain: list, 
     return odds
 
 
-def input_extension_fft_test(half_values, domain, even_coeffs):
+def input_extension_fft_test(half_inputs, domain, even_outputs):
     modulus = 337
 
     inverse_of_2 = modular_inverse(2, modulus)
 
-    assert len(half_values) * 2 == len(even_coeffs) * 2 == len(domain)
+    assert len(half_inputs) * 2 == len(even_outputs) * 2 == len(domain)
     inverse_domain = [modular_inverse(d, modulus) for d in domain]
 
-    resolved_odd_values = input_extension_fft(half_values, even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
-    print("resolved_odd_values", resolved_odd_values)
+    resolved_second_half_inputs = input_extension_fft(half_inputs, even_outputs, modulus, domain, inverse_domain, inverse_of_2)
+    print("resolved_second_half_inputs", resolved_second_half_inputs)
 
-    reconstructed_values = half_values + resolved_odd_values
-    print("reconstructed_values", reconstructed_values)
-    assert fft(reconstructed_values, modulus, domain)[::2] == even_coeffs
+    reconstructed_inputs = half_inputs + resolved_second_half_inputs
+    print("reconstructed_inputs", reconstructed_inputs)
+    assert fft(reconstructed_inputs, modulus, domain)[::2] == even_outputs
 
 # input_extension_fft_test([3], [1, 336], [8])
 # input_extension_fft_test([3, 1, 4, 1], [1, 85, 148, 111, 336, 252, 189, 226], [31, 109, 334,  232])

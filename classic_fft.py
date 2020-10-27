@@ -13,10 +13,10 @@ def fft(vals, modulus, domain):
 
 def fft_test():
     modulus = 337
-    values = [3, 1, 4, 1, 5, 9, 2, 6]
+    inputs = [3, 1, 4, 1, 5, 9, 2, 6]
     domain = [1, 85, 148, 111, 336, 252, 189, 226]
-    assert fft(values[::4], modulus, domain[::4]) == [8, 335]
-    assert fft(values, modulus, domain) == [31, 70, 109, 74, 334, 181, 232, 4]
+    assert fft(inputs[::4], modulus, domain[::4]) == [8, 335]
+    assert fft(inputs, modulus, domain) == [31, 70, 109, 74, 334, 181, 232, 4]
 
 
 def modular_inverse(x, n):

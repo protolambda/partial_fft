@@ -14,7 +14,7 @@ It's still an FFT, and does the same thing.
 See [`alike_fft.py`](alike_fft.py).
 
 Then, can we drop some of the work? Sure,
-we can not generate any of the odd-index coefficients.
+we can not generate any of the odd-index outputs.
 See [`half_out.py`](half_out_fft.py).
 
 And now a magic trick: can we drop the 2nd half of the inputs,
@@ -24,7 +24,7 @@ Yes that is possible, see [`partial_fft.py`](partial_fft.py) (**testing in progr
 Again, the deepst call depth only deals with 1 value from the original input left half, and 1 value from the right half.
 We can only give it the left half, and have it solve for the value from right half, based on expected output.
 
-The idea is then to extend `N` values into `2N`, suiting an FFT with `2N` values, all even coefficients being `0`.
+The idea is then to extend `N` values into `2N`, suiting an FFT with `2N` values, all even outputs being `0`.
 
 TODO: error-correction compatibility. Currently it works by padding N zeros to the coefficients, instead of making all evens zero.
 Maybe it still works, or alternatively, refactor the `partial_fft`.

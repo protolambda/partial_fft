@@ -32,12 +32,12 @@ def half_out_fft(values, modulus, domain) -> list:
 
 modulus = 337
 
-values = [3, 5]
+inputs = [3, 5]
 domain = [1, 336]
-# Full expected coeffs: [8, 335]
-assert half_out_fft(values, modulus, domain[::4]) == [8]
+# Full expected outputs: [8, 335]
+assert half_out_fft(inputs, modulus, domain[::4]) == [8]
 
-values = [3, 1, 4, 1, 5, 9, 2, 6]
+inputs = [3, 1, 4, 1, 5, 9, 2, 6]
 domain = [1, 85, 148, 111, 336, 252, 189, 226]
-# Full expected coeffs: [31, 70, 109, 74, 334, 181, 232, 4]
-assert half_out_fft(values, modulus, domain) == [31, 109, 334, 232]
+# Full expected outputs: [31, 70, 109, 74, 334, 181, 232, 4]
+assert half_out_fft(inputs, modulus, domain) == [31, 109, 334, 232]

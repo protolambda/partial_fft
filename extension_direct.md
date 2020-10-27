@@ -1,10 +1,10 @@
 Can we retrieve values to extend the evaluation of a polynomial with, given some coefficients? With no more work than a single FFT? Yes!
 
 ```
-Known: half the values (the unextended data), half the coefficients (the zero padding)
+Known: half the inputs, half the outputs
 
-Inputs:    v0, v1, v2, v3     (values)
-Outputs:   c0, c1, c2, c3     (coeffs)
+Inputs:    v0, v1, v2, v3
+Outputs:   c0, c1, c2, c3
 Domain:    d0, d1, d2, d3
 
 v0, v1 = known
@@ -44,8 +44,8 @@ Example solution (there may be more, and this is only just a small FFT)
 
 c0 = 0
 c1 = 0
-c2 = unknown coefficient
-c3 = unknown coefficient
+c2 = unknown output
+c3 = unknown output
 
 ----------
 v0 + v1*d0 + v2*d2 + v3*d2*d0 = 0

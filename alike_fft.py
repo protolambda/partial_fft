@@ -59,10 +59,10 @@ def alike_fft(values, modulus, domain) -> (list, list):
 
 modulus = 337
 
-values = [3, 5]
+inputs = [3, 5]
 domain = [1, 336]
-assert alike_fft(values, modulus, domain) == ([8], [335])
+assert alike_fft(inputs, modulus, domain) == ([8], [335])
 
-values = [3, 1, 4, 1, 5, 9, 2, 6]
+inputs = [3, 1, 4, 1, 5, 9, 2, 6]
 domain = [1, 85, 148, 111, 336, 252, 189, 226]
-assert alike_fft(values, modulus, domain) == ([31, 109, 334, 232], [70, 74, 181, 4])
+assert alike_fft(inputs, modulus, domain) == ([31, 109, 334, 232], [70, 74, 181, 4])

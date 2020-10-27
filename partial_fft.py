@@ -30,7 +30,7 @@ def partial_fft_base_case(even_val: int, a: int, modulus: int, inverse_domain: i
 # The output is (odds, b)
 # "odds" is called odds since it's split that way on the deepest level, and merged back up.
 # However, as an outside caller, it will match the 2nd half that's missing after all input half_values.
-# And "b" are the derived odd-index coefficients.
+# And "b" are the derived odd-index outputs.
 def partial_fft(half_values: list, a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> (list, list):
     # print("alike_fft evens ->>>>>>>>>>>>>>>>>>>>>>", evens, "odds", odds)
     if len(a) == 1:
@@ -82,24 +82,24 @@ def partial_fft(half_values: list, a: list, modulus: int, domain: list, inverse_
     return odds, b
 
 
-def partial_fft_test(half_values, domain, even_coeffs):
+def partial_fft_test(half_inputs, domain, even_outputs):
     modulus = 337
 
     inverse_of_2 = modular_inverse(2, modulus)
 
-    assert len(half_values) * 2 == len(even_coeffs) * 2 == len(domain)
+    assert len(half_inputs) * 2 == len(even_outputs) * 2 == len(domain)
     inverse_domain = [modular_inverse(d, modulus) for d in domain]
 
-    resolved_odd_values, resolved_odd_coeffs = partial_fft(half_values, even_coeffs, modulus, domain, inverse_domain, inverse_of_2)
-    print("resolved_odd_values", resolved_odd_values)
-    print("resolved_odd_coeffs", resolved_odd_coeffs)
+    resolved_second_half_inputs, resolved_odd_outputs = partial_fft(half_inputs, even_outputs, modulus, domain, inverse_domain, inverse_of_2)
+    print("resolved_second_half_inputs", resolved_second_half_inputs)
+    print("resolved_odd_outputs", resolved_odd_outputs)
 
-    reconstructed_values = half_values + resolved_odd_values
-    reconstructed_coeffs = [even_coeffs[i // 2] if i % 2 == 0 else resolved_odd_coeffs[i // 2] for i in range(len(even_coeffs)+len(resolved_odd_coeffs))]
-    print("reconstructed_values", reconstructed_values)
-    print("reconstructed_coeffs", reconstructed_coeffs)
-    assert fft(reconstructed_values, modulus, domain) == reconstructed_coeffs
-    assert inverse_fft(reconstructed_coeffs, modulus, domain) == reconstructed_values
+    reconstructed_inputs = half_inputs + resolved_second_half_inputs
+    reconstructed_outputs = [even_outputs[i // 2] if i % 2 == 0 else resolved_odd_outputs[i // 2] for i in range(len(even_outputs)+len(resolved_odd_outputs))]
+    print("reconstructed_inputs", reconstructed_inputs)
+    print("reconstructed_outputs", reconstructed_outputs)
+    assert fft(reconstructed_inputs, modulus, domain) == reconstructed_outputs
+    assert inverse_fft(reconstructed_outputs, modulus, domain) == reconstructed_inputs
 
 
 # partial_fft_test([3], [1, 336], [8])
