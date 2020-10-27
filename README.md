@@ -35,14 +35,29 @@ Generate the missing outputs (odd outputs): [`output_extension_fft.py`](output_e
 Note that the input and output extension FFTs are almost interchangeable:
 to extend inputs with the output-extension FFT, you could use the inverse-FFT of the output-extension FFT.  
 
+For Eth2 DAS, we are interested in extending data:
+- The data is positioned in even-index values
+- The FFT of those values should half a 2nd half that is completely 0.
+
+This is form of the other partial FFT, that states a half of 0 inputs, and then even-index outputs.
+Which can then be optimized, since the zeroes cancel out some operations. 
+See [`das_fft.py`](das_fft.py).
 
 ## Benchmarks
 
+Note that the python math here is not constant time, and zeroes result in significantly better performance.
+
 ```
-          FFT: scale_8            200 ops         1186496 ns/op
-  Partial FFT: scale_8            200 ops         1128262 ns/op
-OtherPart FFT: scale_8            200 ops         1167200 ns/op
- InputExt FFT: scale_8            200 ops          523955 ns/op
-OutputExt FFT: scale_8            200 ops          882554 ns/op
+          FFT                 : scale_10           200 ops         6558750 ns/op
+  Partial FFT                 : scale_10           200 ops         5999147 ns/op
+OtherPart FFT                 : scale_10           200 ops         5755370 ns/op
+ InputExt FFT (zeroed outputs): scale_10           200 ops         2520492 ns/op
+OutputExt FFT (zeroed outputs): scale_10           200 ops         4673011 ns/op
+ InputExt FFT  (zeroed inputs): scale_10           200 ops         4503766 ns/op
+OutputExt FFT  (zeroed inputs): scale_10           200 ops         6798847 ns/op
+      DAS FFT                 : scale_10           200 ops         6060140 ns/op
+      DAS FFT (zeroed outputs): scale_10           200 ops         1682643 ns/op
 ```
+
+Extending outputs given some FFT inputs is more expensive than extending inputs given some FFT outputs.
 
