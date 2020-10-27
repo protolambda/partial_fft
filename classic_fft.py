@@ -25,4 +25,5 @@ def modular_inverse(x, n):
 
 def inverse_fft(vals, modulus, domain):
     vals = fft(vals, modulus, domain)
-    return [x * modular_inverse(len(vals), modulus) % modulus for x in [vals[0]] + vals[1:][::-1]]
+    invlen = modular_inverse(len(vals), modulus)
+    return [x * invlen % modulus for x in [vals[0]] + vals[1:][::-1]]

@@ -3,6 +3,7 @@ import time
 from classic_fft import fft, modular_inverse
 from partial_fft import partial_fft
 from input_extension_fft import input_extension_fft
+from output_extension_fft import output_extension_fft
 
 MODULUS = 52435875175126190479447740508185965837690552500527637822603658699938581184513
 
@@ -54,7 +55,7 @@ def bench(scale: int):
     end = time.time()
     diff = end-start
     ns = diff*1e9
-    print("         FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
+    print("          FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
 
     partial_data = data[:width//2]
     even_outputs = [0] * (width//2)
@@ -66,7 +67,7 @@ def bench(scale: int):
     end = time.time()
     diff = end-start
     ns = diff*1e9
-    print(" Partial FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
+    print("  Partial FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
 
     partial_data = data[:width//2]
     even_outputs = [0] * (width//2)
@@ -77,8 +78,18 @@ def bench(scale: int):
     end = time.time()
     diff = end-start
     ns = diff*1e9
-    print("InputExt FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
+    print(" InputExt FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
 
+    partial_data = data[:width//2]
+    even_outputs = [0] * (width//2)
+    start = time.time()
+    for i in range(N):
+        other_outputs = output_extension_fft(partial_data, even_outputs, modulus, domain, inverse_domain, inverse_of_2)
+        assert len(other_outputs) == width//2
+    end = time.time()
+    diff = end-start
+    ns = diff*1e9
+    print("OutputExt FFT: scale_%-5d %10d ops %15.0f ns/op" % (scale, N, ns/N))
 
 
 bench(8)

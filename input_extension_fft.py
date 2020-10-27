@@ -59,6 +59,13 @@ def input_extension_fft(half_values: list, a: list, modulus: int, domain: list, 
     return odds
 
 
+# TODO inverse input extension fft
+def inverse_input_extension_fft(vals, modulus, domain):
+    vals = fft(vals, modulus, domain)
+    invlen = modular_inverse(len(vals), modulus)
+    return [x * invlen % modulus for x in [vals[0]] + vals[1:][::-1]]
+
+
 def input_extension_fft_test(half_inputs, domain, even_outputs):
     modulus = 337
 

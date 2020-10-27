@@ -31,14 +31,20 @@ Maybe it still works, or alternatively, refactor the `partial_fft`.
 
 Alternatively, use the `partial FFT` to compute the inverse FFT. Provide N consecutive zeroes, and get the odd missing values.
 
-And can it be even faster? Yes, kind of. For data-extension we are only interested in doubling the values, not the coefficients.
-So we can run a specialized form of the partial FFT which only does half of the work: [`input_extension_fft.py`](input_extension_fft.py).
+And can it be even faster? Yes, kind of. We can drop half of the work, either the don't generate the missing inputs, or don't generate the missing outputs.
+Generate the missing inputs (right half): [`input_extension_fft.py`](input_extension_fft.py).
+Generate the missing outputs (odd outputs): [`output_extension_fft.py`](output_extension_fft.py).
+
+Note that the input and output extension FFTs are almost interchangeable:
+to extend inputs with the output-extension FFT, you could use the inverse-FFT of the output-extension FFT.  
+
 
 ## Benchmarks
 
 ```
-         FFT: scale_8            200 ops         1164430 ns/op
- Partial FFT: scale_8            200 ops         1108919 ns/op
-InputExt FFT: scale_8            200 ops          512486 ns/op
+          FFT: scale_8            200 ops         1186496 ns/op
+  Partial FFT: scale_8            200 ops         1128262 ns/op
+ InputExt FFT: scale_8            200 ops          523955 ns/op
+OutputExt FFT: scale_8            200 ops          882554 ns/op
 ```
 
