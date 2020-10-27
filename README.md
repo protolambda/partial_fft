@@ -26,10 +26,7 @@ We can only give it the left half, and have it solve for the value from right ha
 
 The idea is then to extend `N` values into `2N`, suiting an FFT with `2N` values, all even outputs being `0`.
 
-TODO: error-correction compatibility. Currently it works by padding N zeros to the coefficients, instead of making all evens zero.
-Maybe it still works, or alternatively, refactor the `partial_fft`.
-
-Alternatively, use the `partial FFT` to compute the inverse FFT. Provide N consecutive zeroes, and get the odd missing values.
+The other way around, providing only the second half of the inputs, is also possible, see [`other_partial_fft.py`](./other_partial_fft.py)
 
 And can it be even faster? Yes, kind of. We can drop half of the work, either the don't generate the missing inputs, or don't generate the missing outputs.
 Generate the missing inputs (right half): [`input_extension_fft.py`](input_extension_fft.py).
@@ -44,6 +41,7 @@ to extend inputs with the output-extension FFT, you could use the inverse-FFT of
 ```
           FFT: scale_8            200 ops         1186496 ns/op
   Partial FFT: scale_8            200 ops         1128262 ns/op
+OtherPart FFT: scale_8            200 ops         1167200 ns/op
  InputExt FFT: scale_8            200 ops          523955 ns/op
 OutputExt FFT: scale_8            200 ops          882554 ns/op
 ```
