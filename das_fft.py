@@ -18,7 +18,6 @@ from classic_fft import fft, inverse_fft, modular_inverse
 #     # a, b, x all the same!
 #     return a
 
-# values here is only the first half of the original input
 # "a" are the even-indexed expected outputs
 # The returned list is "b", the derived odd-index outputs.
 def das_fft(a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> list:
