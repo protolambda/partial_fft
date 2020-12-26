@@ -16,11 +16,22 @@ def alike_fft(values, modulus, domain) -> (list, list):
         print("---")
         return a, b
 
+    # optional optimization
+    if len(values) == 4:
+        p, q, r, s = values[0], values[1], values[2], values[3]
+        a0 = (p + q + r + s) % modulus
+        b0 = (p + q*domain[1] + r*domain[2] + s*domain[3]) % modulus
+        a1 = (p + q*domain[2] + r + s*domain[2]) % modulus
+        b1 = (p + q*domain[3] + r*domain[2] + s*domain[1]) % modulus
+        a, b = [a0, a1], [b0, b1]
+        return a, b
+
     assert len(values) >= 2
 
     half = len(values) // 2
     halfhalf = half // 2
 
+    print("hhmm")
     L0, L1 = alike_fft(values[::2], modulus, domain[::2])
     print("alike_fft L", L0 + L1)
     R0, R1 = alike_fft(values[1::2], modulus, domain[::2])

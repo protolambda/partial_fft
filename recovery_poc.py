@@ -346,6 +346,8 @@ debug_bigs("extended data", extended_data)
 # The odd_data was constructed in such a way that the second half of coefficients are all zero.
 coeffs_poc = fft(extended_data, MODULUS, ROOT_OF_UNITY, inv=True)
 assert coeffs_poc[WIDTH//2:] == [0]*(WIDTH//2)
+debug_bigs("coeffs", coeffs_poc)
+
 
 import random
 
