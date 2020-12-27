@@ -1,4 +1,4 @@
-from classic_fft import fft, modular_inverse
+from classic_fft import fft, modular_inverse, inverse_fft
 
 
 def input_extension_fft_base_case(even_val: int, a: int, modulus: int, inverse_domain: int) -> int:
@@ -78,3 +78,19 @@ def input_extension_fft_test(half_inputs, domain, even_outputs):
 # input_extension_fft_test([3, 1, 4, 1], [1, 85, 148, 111, 336, 252, 189, 226], [31, 109, 334,  232])
 # input_extension_fft_test([3, 1, 4, 1], [1, 85, 148, 111, 336, 252, 189, 226], [0, 0, 0, 0])
 
+# yet another variant: with the even coefficients (inputs) and half the data (outputs), compute the odd coefficients
+def input_odd_extension_fft(even_vals, half_out, modulus, domain):
+    L = fft(even_vals, modulus, domain[::2])
+    # R = fft(vals[1::2], modulus, domain[::2])
+    R = [0 for i in L]
+    for i, x in enumerate(L):
+        # y = R[i]
+        # y_times_root = y * domain[i]
+        # o[i] = (x + y_times_root) % modulus
+        # o[i + len(L)] = (x - y_times_root) % modulus == half_out[i]
+        # x == half_out[i] + y_times_root == half_out[i] + y * domain[i]
+        # R[i] = y = (x - half_out[i]) * inv_domain[i]
+        assert modular_inverse(domain[i], modulus) == domain[-i]
+        R[i] = ((x - half_out[i]) * domain[-i]) % modulus
+    odd_values = inverse_fft(R, modulus, domain[::2])
+    return odd_values
