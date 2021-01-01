@@ -20,13 +20,14 @@ from classic_fft import fft, inverse_fft, modular_inverse
 
 # "a" are the even-indexed expected outputs
 # The returned list is "b", the derived odd-index outputs.
-def das_fft(a: list, modulus: int, domain: list, inverse_domain: list, inv2: int) -> list:
+def das_fft(a: list, modulus: int, domain: list, inverse_domain: list) -> list:
     if len(a) == 2:
         a_half0 = a[0]
         a_half1 = a[1]
-        x = (((a_half0 + a_half1) % modulus) * inv2) % modulus
+        x = ((a_half0 + a_half1) % modulus) % modulus
         # y = (((a_half0 - x) % modulus) * inverse_domain[0]) % modulus     # inverse_domain[0] will always be 1
-        y = (a_half0 - x) % modulus
+        y = ((a_half0 - a_half1) % modulus) % modulus
+        # y = (a_half0 - x) % modulus
 
         y_times_root = y * domain[1]
         return [
@@ -43,11 +44,11 @@ def das_fft(a: list, modulus: int, domain: list, inverse_domain: list, inv2: int
     L0 = [0] * halfhalf
     R0 = [0] * halfhalf
     for i, (a_half0, a_half1) in enumerate(zip(a[:halfhalf], a[halfhalf:])):
-        L0[i] = (((a_half0 + a_half1) % modulus) * inv2) % modulus
-        R0[i] = (((a_half0 - L0[i]) % modulus) * inverse_domain[i * 2]) % modulus
+        L0[i] = ((a_half0 + a_half1) % modulus) % modulus
+        R0[i] = (((a_half0 - a_half1) % modulus) * inverse_domain[i * 2]) % modulus
 
-    L1 = das_fft(L0, modulus, domain[::2], inverse_domain[::2], inv2)
-    R1 = das_fft(R0, modulus, domain[::2], inverse_domain[::2], inv2)
+    L1 = das_fft(L0, modulus, domain[::2], inverse_domain[::2])
+    R1 = das_fft(R0, modulus, domain[::2], inverse_domain[::2])
 
     b = [0] * half
     for i, (x, y) in enumerate(zip(L1, R1)):
@@ -57,6 +58,11 @@ def das_fft(a: list, modulus: int, domain: list, inverse_domain: list, inv2: int
 
     return b
 
+def das_fft_wrapper(a: list, modulus: int, domain: list, inverse_domain: list):
+    invlen = modular_inverse(len(a), modulus)
+    b = das_fft(a, modulus, domain, inverse_domain)
+    out = [(v*invlen)%modulus for v in b]
+    return out
 
 def das_fft_test(domain, even_outputs):
     modulus = 337
@@ -68,7 +74,7 @@ def das_fft_test(domain, even_outputs):
 
     half = len(even_outputs)
 
-    resolved_odd_outputs = das_fft(even_outputs, modulus, domain, inverse_domain, inverse_of_2)
+    resolved_odd_outputs = das_fft_wrapper(even_outputs, modulus, domain, inverse_domain)
     print("resolved_odd_outputs", resolved_odd_outputs)
 
     reconstructed_outputs = [even_outputs[i // 2] if i % 2 == 0 else resolved_odd_outputs[i // 2] for i in range(2*half)]
@@ -80,7 +86,7 @@ def das_fft_test(domain, even_outputs):
     assert fft(reconstructed_inputs, modulus, domain) == reconstructed_outputs
 
 #
-# das_fft_test([1, 336], [8])
-# das_fft_test([1, 85, 148, 111, 336, 252, 189, 226], [31, 109, 334,  232])
-# das_fft_test([1, 85, 148, 111, 336, 252, 189, 226], [0, 0, 0, 0])
+das_fft_test([1, 336], [8])
+das_fft_test([1, 85, 148, 111, 336, 252, 189, 226], [31, 109, 334,  232])
+das_fft_test([1, 85, 148, 111, 336, 252, 189, 226], [0, 0, 0, 0])
 
